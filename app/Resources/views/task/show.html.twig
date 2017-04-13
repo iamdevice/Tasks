@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Task</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Taskid</th>
+                <td>{{ task.taskId }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ task.name }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ task.description }}</td>
+            </tr>
+            <tr>
+                <th>Isdeleted</th>
+                <td>{% if task.isDeleted %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Workresult</th>
+                <td>{{ task.workResult }}</td>
+            </tr>
+            <tr>
+                <th>Createdts</th>
+                <td>{% if task.createdTs %}{{ task.createdTs|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedts</th>
+                <td>{% if task.updatedTs %}{{ task.updatedTs|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('task_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('task_edit', { 'taskId': task.taskId }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

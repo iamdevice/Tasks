@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tasks list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Creator</th>
+                <th>Performer</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in tasks %}
+            <tr>
+                <td><a href="{{ path('task_show', { 'taskId': task.taskId }) }}">{{ task.taskId }}</a></td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.creator.name }}</td>
+                <td>{% if task.performer %}{{ task.performer.name }}{% else %}Не назначен{% endif %}</td>
+                <td>{{ task.statusId.name }}</td>
+                <td>{% if task.createdTs %}{{ task.createdTs|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if task.updatedTs %}{{ task.updatedTs|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        {% if isSupervisor and task.statusId.name != 'Закрыта' %}
+                        <li>
+                            <a href="{{ path('task_close', { 'taskId': task.taskId }) }}">close</a>
+                        </li>
+                        {% endif %}
+                        {% if task.performer == null %}
+                        <li>
+                            <a href="{{ path('task_take', { 'taskId': task.taskId }) }}">take</a>
+                        </li>
+                        {% endif %}
+                        <li>
+                            <a href="{{ path('task_show', { 'taskId': task.taskId }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('task_edit', { 'taskId': task.taskId }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('task_new') }}">Create a new task</a>
+        </li>
+    </ul>
+
+    <a href="{{ path('logout') }}">logout</a>
+{% endblock %}

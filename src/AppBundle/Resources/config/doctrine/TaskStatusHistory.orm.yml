@@ -17,12 +17,6 @@ AppBundle\Entity\TaskStatusHistory:
             nullable: false
             options:
                 default: CURRENT_TIMESTAMP
-        userId:
-            type: integer
-            nullable: false
-            options:
-                unsigned: true
-            column: user_id
     lifecycleCallbacks: {  }
 
     oneToOne:
@@ -36,3 +30,8 @@ AppBundle\Entity\TaskStatusHistory:
         joinColumn:
           name: status_id
           referencedColumnName: status_id
+      userId:
+        targetEntity: AppBundle\Entity\User
+        joinColumn:
+          name: user_id
+          referencedColumnName: user_id

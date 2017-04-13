@@ -1,3 +1,10 @@
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+task:
+  resource: '@AppBundle/Resources/config/routing.yml'
+
+logout:
+  path: /logout
+  defaults: { _controller: 'AppBundle:Security:logout' }

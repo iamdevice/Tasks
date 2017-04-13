@@ -1,4 +1,6 @@
 AppBundle\Entity\Task:
+    repositoryClass: AppBundle\Repository\TaskRepository
+
     type: entity
     table: task
     id:

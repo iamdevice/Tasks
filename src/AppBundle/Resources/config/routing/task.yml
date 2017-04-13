@@ -1,0 +1,34 @@
+task_index:
+    path:     /
+    defaults: { _controller: "AppBundle:Task:index" }
+    methods:  GET
+
+task_show:
+    path:     /{taskId}/show
+    defaults: { _controller: "AppBundle:Task:show" }
+    methods:  GET
+
+task_new:
+    path:     /new
+    defaults: { _controller: "AppBundle:Task:new" }
+    methods:  [GET, POST]
+
+task_edit:
+    path:     /{taskId}/edit
+    defaults: { _controller: "AppBundle:Task:edit" }
+    methods:  [GET, POST]
+
+task_delete:
+    path:     /{taskId}/delete
+    defaults: { _controller: "AppBundle:Task:delete" }
+    methods:  DELETE
+
+task_take:
+    path:     /{taskId}/take
+    defaults: { _controller: "AppBundle:Task:take" }
+    methods:  GET
+
+task_close:
+    path:     /{taskId}/close
+    defaults: { _controller: "AppBundle:Task:close" }
+    methods:  GET
