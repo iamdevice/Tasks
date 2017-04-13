@@ -1,0 +1,67 @@
+AppBundle\Entity\Task:
+    type: entity
+    table: task
+    id:
+        taskId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: task_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+        description:
+            type: text
+            nullable: false
+            length: 65535
+            options:
+                fixed: false
+        isDeleted:
+            type: boolean
+            nullable: true
+            options:
+                default: '0'
+            column: is_deleted
+        workResult:
+            type: text
+            nullable: true
+            length: 65535
+            options:
+                fixed: false
+            column: work_result
+        createdTs:
+            type: datetime
+            nullable: true
+            column: created_ts
+        updatedTs:
+            type: datetime
+            nullable: true
+            options:
+                default: CURRENT_TIMESTAMP
+            column: updated_ts
+    lifecycleCallbacks: {  }
+
+    oneToOne:
+      creator:
+        targetEntity: AppBundle\Entity\User
+        joinColumn:
+          name: creator
+          referencedColumnName: user_id
+      performer:
+        targetEntity: AppBundle\Entity\User
+        joinColumn:
+          name: performer
+          referencedColumnName: user_id
+      statusId:
+        targetEntity: AppBundle\Entity\TaskStatus
+        joinColumn:
+          name: status_id
+          referencedColumnName: status_id

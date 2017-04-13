@@ -1,0 +1,38 @@
+AppBundle\Entity\TaskStatusHistory:
+    type: entity
+    table: task_status_history
+    id:
+        historyId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: history_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        ts:
+            type: datetime
+            nullable: false
+            options:
+                default: CURRENT_TIMESTAMP
+        userId:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            column: user_id
+    lifecycleCallbacks: {  }
+
+    oneToOne:
+      taskId:
+        targetEntity: AppBundle\Entity\Task
+        joinColumn:
+          name: task_id
+          referencedColumnName: task_id
+      statusId:
+        targetEntity: AppBundle\Entity\TaskStatus
+        joinColumn:
+          name: status_id
+          referencedColumnName: status_id

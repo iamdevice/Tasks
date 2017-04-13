@@ -1,0 +1,21 @@
+AppBundle\Entity\TaskStatus:
+    type: entity
+    table: task_status
+    id:
+        statusId:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: false
+            id: true
+            column: status_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        name:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }

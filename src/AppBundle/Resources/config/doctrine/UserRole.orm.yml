@@ -1,0 +1,28 @@
+AppBundle\Entity\UserRole:
+    type: entity
+    table: user_role
+    id:
+        roleId:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            column: role_id
+            generator:
+                strategy: IDENTITY
+    fields:
+        humanityName:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+            column: humanity_name
+        name:
+            type: string
+            nullable: false
+            length: 20
+            options:
+                fixed: false
+    lifecycleCallbacks: {  }
