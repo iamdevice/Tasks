@@ -69,11 +69,15 @@ class TaskController extends Controller
     public function showAction(Task $task)
     {
         $deleteForm = $this->createDeleteForm($task);
+        $history = $this->getDoctrine()
+            ->getRepository('AppBundle:TaskStatusHistory')
+            ->getTaskHistory($task);
 
         return $this->render('task/show.html.twig', array(
             'isSupervisor' => $this->isSupervisor(),
             'user' => $this->getUser(),
             'task' => $task,
+            'history' => $history,
             'delete_form' => $deleteForm->createView(),
         ));
     }

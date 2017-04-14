@@ -1,4 +1,6 @@
 AppBundle\Entity\TaskStatusHistory:
+    repositoryClass: AppBundle\Repository\TaskHistoryRepository
+
     type: entity
     table: task_status_history
     id:
