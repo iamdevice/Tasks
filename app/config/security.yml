@@ -36,3 +36,4 @@ security:
 
     access_control:
       - { path: ^/task/(.*?)/close, roles: ROLE_SUPERVISOR }
+      - { path: ^/task/(.*?)/delete, roles: ROLE_SUPERVISOR }

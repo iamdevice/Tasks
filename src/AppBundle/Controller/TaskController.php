@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Task;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Task controller.
@@ -20,18 +21,20 @@ class TaskController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $tasks = $em->getRepository('AppBundle:Task')->findAll();
-        $isSupervisor = $this->getUser()->getRoleId()->getName() === 'ROLE_SUPERVISOR';
-
+        $tasks = $em->getRepository('AppBundle:Task')->findBy(['isDeleted' => false]);
         return $this->render('task/index.html.twig', array(
             'tasks' => $tasks,
-            'isSupervisor' => $isSupervisor,
+            'isSupervisor' => $this->isSupervisor(),
+            'user' => $this->getUser(),
         ));
     }
 
     /**
      * Creates a new task entity.
      *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -59,12 +62,17 @@ class TaskController extends Controller
     /**
      * Finds and displays a task entity.
      *
+     * @param Task $task
+     *
+     * @return Response
      */
     public function showAction(Task $task)
     {
         $deleteForm = $this->createDeleteForm($task);
 
         return $this->render('task/show.html.twig', array(
+            'isSupervisor' => $this->isSupervisor(),
+            'user' => $this->getUser(),
             'task' => $task,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -73,6 +81,10 @@ class TaskController extends Controller
     /**
      * Displays a form to edit an existing task entity.
      *
+     * @param Request $request
+     * @param Task $task
+     *
+     * @return Response
      */
     public function editAction(Request $request, Task $task)
     {
@@ -87,6 +99,8 @@ class TaskController extends Controller
         }
 
         return $this->render('task/edit.html.twig', array(
+            'isSupervisor' => $this->isSupervisor(),
+            'user' => $this->getUser(),
             'task' => $task,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
@@ -96,16 +110,23 @@ class TaskController extends Controller
     /**
      * Deletes a task entity.
      *
+     * @param Request $request
+     * @param Task $task
+     *
+     * @return Response
      */
     public function deleteAction(Request $request, Task $task)
     {
-        $form = $this->createDeleteForm($task);
-        $form->handleRequest($request);
+        if ($this->getUser()->getRoleId()->getName() == 'ROLE_SUPERVISOR') {
+            $form = $this->createDeleteForm($task);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($task);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $task->setIsDeleted(true);
+                $em->persist($task);
+                $em->flush();
+            }
         }
 
         return $this->redirectToRoute('task_index');
@@ -141,5 +162,10 @@ class TaskController extends Controller
         $em->closeTask($task, $this->getUser());
 
         return $this->redirectToRoute('task_index');
+    }
+
+    private function isSupervisor()
+    {
+        return $this->getUser()->getRoleId()->getName() === 'ROLE_SUPERVISOR';
     }
 }

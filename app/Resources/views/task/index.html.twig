@@ -43,9 +43,11 @@
                         <li>
                             <a href="{{ path('task_show', { 'taskId': task.taskId }) }}">show</a>
                         </li>
+                        {% if task.performer == user or task.performer == null %}
                         <li>
                             <a href="{{ path('task_edit', { 'taskId': task.taskId }) }}">edit</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </td>
             </tr>
