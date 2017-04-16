@@ -66,4 +66,12 @@ class TaskRepository extends EntityRepository
         $em->persist($history);
         $em->flush($history);
     }
+
+    public function unfinishedUserTasks(User $user)
+    {
+        return $this->findBy([
+            'performer' => $user,
+            'isDeleted' => false
+        ]);
+    }
 }

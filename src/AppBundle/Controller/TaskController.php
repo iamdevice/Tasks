@@ -172,4 +172,16 @@ class TaskController extends Controller
     {
         return $this->getUser()->getRoleId()->getName() === 'ROLE_SUPERVISOR';
     }
+
+    public function unfinishedAction()
+    {
+        $tasks = $this->getDoctrine()->getManager()->getRepository('AppBundle:Task')
+            ->unfinishedUserTasks($this->getUser());
+
+        return $this->render('task/index.html.twig', array(
+            'tasks' => $tasks,
+            'isSupervisor' => $this->isSupervisor(),
+            'user' => $this->getUser(),
+        ));
+    }
 }

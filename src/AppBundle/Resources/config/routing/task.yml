@@ -32,3 +32,9 @@ task_close:
     path:     /{taskId}/close
     defaults: { _controller: "AppBundle:Task:close" }
     methods:  GET
+
+task_unfinished:
+    path:     /unfinished
+    defaults: { _controller: "AppBundle:Task:unfinished" }
+    methods:  GET
+
