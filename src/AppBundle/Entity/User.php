@@ -131,5 +131,10 @@ class User implements UserInterface
     {
         return [ $this->getRoleId()->getName() ];
     }
+
+    public function isSupervisor()
+    {
+        return $this->roleId->getName() === 'ROLE_SUPERVISOR';
+    }
 }
 

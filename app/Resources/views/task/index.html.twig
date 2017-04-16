@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1>Tasks list</h1>
+    <h3><a href="{{ path('task_unfinished') }}">My unfinished tasks</a></h3>
 
     <table>
         <thead>
@@ -30,7 +31,7 @@
                 <td>{% if task.updatedTs %}{{ task.updatedTs|date('Y-m-d H:i:s') }}{% endif %}</td>
                 <td>
                     <ul>
-                        {% if isSupervisor and task.statusId.name != 'Закрыта' %}
+                        {% if isSupervisor and task.performer != null and task.statusId.name != 'Закрыта' %}
                         <li>
                             <a href="{{ path('task_close', { 'taskId': task.taskId }) }}">close</a>
                         </li>
@@ -43,7 +44,7 @@
                         <li>
                             <a href="{{ path('task_show', { 'taskId': task.taskId }) }}">show</a>
                         </li>
-                        {% if task.performer == user or task.performer == null %}
+                        {% if task.performer == user or task.performer == null or isSupervisor %}
                         <li>
                             <a href="{{ path('task_edit', { 'taskId': task.taskId }) }}">edit</a>
                         </li>

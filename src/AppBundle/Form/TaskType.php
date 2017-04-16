@@ -2,6 +2,8 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Task;
+use AppBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -16,6 +18,10 @@ class TaskType extends AbstractType
         $builder
             ->add('name')
             ->add('description');
+
+        if ($this->canEditWorkResult($options)) {
+            $builder->add('workResult');
+        }
     }
     
     /**
@@ -24,7 +30,8 @@ class TaskType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Task'
+            'data_class' => 'AppBundle\Entity\Task',
+            'user' => 'AppBundle\Entity\User',
         ));
     }
 
@@ -36,5 +43,23 @@ class TaskType extends AbstractType
         return 'appbundle_task';
     }
 
+    private function canEditWorkResult(array $options)
+    {
+        $result = false;
 
+        /** @var Task $task */
+        $task = $options['data'];
+        /** @var User $user */
+        $user = $options['user'];
+
+        if ($task->getPerformer() == $user && $task->isStatusInProcess()) {
+            $result = true;
+        }
+
+        if ($user->isSupervisor() && $task->isSupervisorEditStatus()) {
+            $result = true;
+        }
+
+        return $result;
+    }
 }

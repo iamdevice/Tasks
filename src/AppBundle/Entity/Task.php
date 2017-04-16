@@ -283,5 +283,25 @@ class Task
     {
         return $this->statusId;
     }
+
+    public function isStatusInProcess()
+    {
+        return $this->statusId->getName() == 'В работе';
+    }
+
+    public function isStatusOnCheck()
+    {
+        return $this->statusId->getName() == 'На проверке';
+    }
+
+    public function isStatusClosed()
+    {
+        return $this->statusId->getName() == 'Закрыта';
+    }
+
+    public function isSupervisorEditStatus()
+    {
+        return $this->isStatusOnCheck() || $this->isStatusClosed();
+    }
 }
 
